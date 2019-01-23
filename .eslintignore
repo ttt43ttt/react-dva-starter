@@ -1,3 +1,7 @@
 # Ignore all bundled (built) files
 build/**/*
 node_modules/**/*
+
+# ignore build scripts
+server.js
+*.config.js

@@ -19,3 +19,8 @@ app.router(router);
 
 // 5. Start
 app.start('#root');
+
+// react hot loader
+if (module.hot && process.env.DEVELOPMENT) {
+  module.hot.accept();
+}

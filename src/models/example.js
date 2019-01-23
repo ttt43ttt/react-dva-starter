@@ -1,17 +1,16 @@
-
 export default {
-
   namespace: 'example',
 
-  state: {},
+  state: { example: { list: ['cat', 'dog', 'fish'] } },
 
   subscriptions: {
-    setup({ dispatch, history }) {  // eslint-disable-line
-    },
+    // eslint-disable-next-line
+    setup({ dispatch, history }) {},
   },
 
   effects: {
-    *fetch({ payload }, { call, put }) {  // eslint-disable-line
+    // eslint-disable-next-line
+    *fetch({ payload }, { call, put }) {
       yield put({ type: 'save' });
     },
   },
@@ -21,5 +20,4 @@ export default {
       return { ...state, ...action.payload };
     },
   },
-
 };

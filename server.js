@@ -6,7 +6,7 @@ const webpackConfig = require("./webpack.config");
 const app = express();
 const compiler = webpack(webpackConfig);
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8000;
 const host = process.env.HOST || "localhost";
 
 const historyMidleware = require("connect-history-api-fallback")();

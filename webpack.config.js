@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { getIfUtils, removeEmpty } = require('webpack-config-utils');
+const autoprefixer = require('autoprefixer');
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const { ifProduction, ifDevelopment } = getIfUtils(NODE_ENV);
@@ -45,15 +46,18 @@ module.exports = {
           }
         }
       },
+      // CSS
       {
         test: /\.css$/,
         include: [path.resolve(__dirname, 'src')],
         use: [
-          'style-loader',
+          {
+            loader: 'style-loader'
+          },
           {
             loader: 'css-loader',
             options: {
-              modules: true
+              modules: true // use CSS modules only for files in src folder
             }
           }
         ]
@@ -63,6 +67,31 @@ module.exports = {
         exclude: [path.resolve(__dirname, 'src')],
         use: ['style-loader', 'css-loader']
       },
+      // LESS
+      {
+        test: /\.less$/,
+        use: [
+          {
+            loader: 'style-loader' // creates style nodes from JS strings
+          },
+          {
+            loader: 'css-loader' // translates CSS into CommonJS
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: () => [autoprefixer]
+            }
+          },
+          {
+            loader: 'less-loader', // compiles Less to CSS
+            options: {
+              javascriptEnabled: true
+            }
+          }
+        ]
+      },
+      // images
       {
         test: /\.(png|jpg|gif)$/,
         use: [

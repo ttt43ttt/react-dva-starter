@@ -18,19 +18,19 @@ module.exports = {
       '@babel/polyfill',
       // ifDevelopment("react-hot-loader/patch"),
       ifDevelopment('webpack-hot-middleware/client'),
-      './src/index.js',
-    ]),
+      './src/index.js'
+    ])
   },
   output: {
     path: path.resolve(__dirname, 'build/dist'),
     publicPath: '/',
     filename: 'app-[hash].js',
-    chunkFilename: '[id].bundle-[chunkhash].js',
+    chunkFilename: '[id].bundle-[chunkhash].js'
   },
 
   resolve: {
     modules: [path.resolve(__dirname, 'src'), 'node_modules'],
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx']
   },
 
   module: {
@@ -41,32 +41,38 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            cacheDirectory: './build/babel_cache',
-          },
-        },
+            cacheDirectory: './build/babel_cache'
+          }
+        }
       },
       {
         test: /\.css$/,
+        include: [path.resolve(__dirname, 'src')],
         use: [
           'style-loader',
           {
             loader: 'css-loader',
             options: {
-              modules: true,
-            },
-          },
-        ],
+              modules: true
+            }
+          }
+        ]
+      },
+      {
+        test: /\.css$/,
+        exclude: [path.resolve(__dirname, 'src')],
+        use: ['style-loader', 'css-loader']
       },
       {
         test: /\.(png|jpg|gif)$/,
         use: [
           {
             loader: 'file-loader',
-            options: {},
-          },
-        ],
-      },
-    ],
+            options: {}
+          }
+        ]
+      }
+    ]
   },
 
   plugins: removeEmpty([
@@ -74,9 +80,9 @@ module.exports = {
     new webpack.DefinePlugin(definePluginVars),
     new HtmlWebpackPlugin({
       template: './src/index.html',
-      filename: './index.html',
-    }),
+      filename: './index.html'
+    })
   ]),
 
-  devtool: ifDevelopment('source-map'),
+  devtool: ifDevelopment('source-map')
 };

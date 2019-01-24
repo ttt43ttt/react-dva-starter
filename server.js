@@ -15,7 +15,7 @@ const historyMiddleware = require('connect-history-api-fallback')();
 const webpackDevMiddleware = require('webpack-dev-middleware')(compiler, {
   reload: true,
   noInfo: true,
-  publicPath: webpackConfig.output.publicPath,
+  publicPath: webpackConfig.output.publicPath
 });
 
 const webpackHotMiddleware = require('webpack-hot-middleware')(compiler);

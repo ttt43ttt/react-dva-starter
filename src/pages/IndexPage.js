@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import { DatePicker } from 'antd';
+import { FormattedMessage } from 'react-intl';
 import styles from './IndexPage.css';
 
 function IndexPage() {
@@ -9,6 +10,7 @@ function IndexPage() {
       <h1 className={styles.title}>Yay! Welcome to dva!</h1>
       <div className={styles.welcome} />
       <DatePicker />
+      <FormattedMessage id="navBar.lang" />
       <ul className={styles.list}>
         <li>
           To get started, edit <code>src/index.js</code> and save to reload.

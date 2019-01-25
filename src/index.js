@@ -1,6 +1,6 @@
 import dva from 'dva';
 
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.less';
 import './index.css';
 
 import router from './router';

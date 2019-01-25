@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { getIfUtils, removeEmpty } = require('webpack-config-utils');
 const autoprefixer = require('autoprefixer');
 
@@ -26,8 +27,8 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'build/dist'),
     publicPath: '/',
-    filename: 'app-[hash].js',
-    chunkFilename: '[id].bundle-[chunkhash].js'
+    filename: ifProduction('app-[hash].js', 'app.js'),
+    chunkFilename: ifProduction('[id].bundle-[chunkhash].js', '[id].bundle.js')
   },
 
   resolve: {
@@ -53,7 +54,7 @@ module.exports = {
         include: [path.resolve(__dirname, 'src')],
         use: [
           {
-            loader: 'style-loader'
+            loader: ifProduction(MiniCssExtractPlugin.loader, 'style-loader')
           },
           {
             loader: 'css-loader',
@@ -66,14 +67,14 @@ module.exports = {
       {
         test: /\.css$/,
         exclude: [path.resolve(__dirname, 'src')],
-        use: ['style-loader', 'css-loader']
+        use: [ifProduction(MiniCssExtractPlugin.loader, 'style-loader'), 'css-loader']
       },
       // LESS
       {
         test: /\.less$/,
         use: [
           {
-            loader: 'style-loader' // creates style nodes from JS strings
+            loader: ifProduction(MiniCssExtractPlugin.loader, 'style-loader') // creates style nodes from JS strings
           },
           {
             loader: 'css-loader' // translates CSS into CommonJS
@@ -116,6 +117,12 @@ module.exports = {
 
   plugins: removeEmpty([
     ifProduction(new CleanWebpackPlugin(['build/dist'])),
+    ifProduction(
+      new MiniCssExtractPlugin({
+        filename: '[name]-[hash].css',
+        chunkFilename: '[id].[hash].css'
+      })
+    ),
     ifDevelopment(new webpack.HotModuleReplacementPlugin()),
     new webpack.DefinePlugin(definePluginVars),
     new HtmlWebpackPlugin({

@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { getIfUtils, removeEmpty } = require('webpack-config-utils');
 const autoprefixer = require('autoprefixer');
@@ -114,6 +115,7 @@ module.exports = {
   },
 
   plugins: removeEmpty([
+    ifProduction(new CleanWebpackPlugin(['build/dist'])),
     ifDevelopment(new webpack.HotModuleReplacementPlugin()),
     new webpack.DefinePlugin(definePluginVars),
     new HtmlWebpackPlugin({

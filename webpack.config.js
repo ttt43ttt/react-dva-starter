@@ -105,6 +105,10 @@ module.exports = {
             options: {}
           }
         ]
+      },
+      {
+        test: /\.svg$/,
+        loader: 'url-loader'
       }
     ]
   },

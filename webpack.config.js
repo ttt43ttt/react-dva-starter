@@ -127,9 +127,16 @@ module.exports = {
     new webpack.DefinePlugin(definePluginVars),
     new HtmlWebpackPlugin({
       template: './src/index.html',
-      filename: './index.html'
+      filename: './index.html',
+      minify: false
     })
   ]),
 
-  devtool: ifDevelopment('source-map')
+  devtool: ifDevelopment('source-map'),
+
+  optimization: {
+    splitChunks: {
+      chunks: 'all'
+    }
+  }
 };

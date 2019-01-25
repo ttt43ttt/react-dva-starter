@@ -6,6 +6,14 @@
     }
   },
   "plugins": [
+    [
+      "module-resolver",
+      {
+        "alias": {
+          "@": "./src"
+        }
+      }
+    ],
     "@babel/plugin-transform-runtime",
     "@babel/plugin-proposal-object-rest-spread",
     ["@babel/plugin-proposal-decorators", { "legacy": true }],

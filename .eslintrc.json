@@ -20,6 +20,7 @@
     "page": true
   },
   "rules": {
+    "prettier/prettier": 1,
     "react/jsx-filename-extension": [1, { "extensions": [".js"] }],
     "react/jsx-wrap-multilines": 0,
     "react/prefer-stateless-function": 0,
@@ -35,6 +36,7 @@
       }
     ],
     "import/order": 1,
+    "import/prefer-default-export": 1,
     "jsx-a11y/no-noninteractive-element-interactions": 0,
     "jsx-a11y/click-events-have-key-events": 0,
     "jsx-a11y/no-static-element-interactions": 0,

@@ -1,11 +1,11 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { Menu, Icon } from 'antd';
 import classNames from 'classnames';
 import { injectIntl } from 'react-intl';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
 
-class SelectLang extends PureComponent {
+class SelectLang extends React.PureComponent {
   render() {
     const {
       className,

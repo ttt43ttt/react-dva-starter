@@ -4,9 +4,10 @@ import { connect } from 'dva';
 import store from 'store';
 import SelectLang from '@/components/SelectLang';
 import Footer from './Footer';
+import styles from './BasicLayout.less';
 
 @connect(({ locale }) => ({ locale }))
-class BaseLayout extends React.Component {
+class BasicLayout extends React.Component {
   render() {
     const {
       children,
@@ -37,4 +38,4 @@ class BaseLayout extends React.Component {
   }
 }
 
-export default BaseLayout;
+export default BasicLayout;

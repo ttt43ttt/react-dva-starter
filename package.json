@@ -12,6 +12,8 @@
     "antd": "^3.12.4",
     "classnames": "^2.2.6",
     "dva": "^2.4.1",
+    "dva-loading": "^2.0.6",
+    "history": "^4.7.2",
     "lodash": "^4.17.11",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",

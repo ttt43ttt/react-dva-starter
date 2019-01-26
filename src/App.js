@@ -11,7 +11,6 @@ import antdEn from 'antd/lib/locale-provider/en_US';
 
 import enMessages from '@/locales/en';
 import zhMessages from '@/locales/zh';
-import BaseLayout from './BaseLayout';
 
 // register locale data
 addLocaleData([...en, ...zh]);
@@ -27,7 +26,7 @@ const antdLocales = {
 };
 
 @connect(({ locale }) => ({ locale }))
-class Layout extends React.Component {
+class App extends React.Component {
   render() {
     const {
       children,
@@ -35,12 +34,10 @@ class Layout extends React.Component {
     } = this.props;
     return (
       <IntlProvider locale={lang} messages={messages[lang]}>
-        <LocaleProvider locale={antdLocales[lang]}>
-          <BaseLayout>{children}</BaseLayout>
-        </LocaleProvider>
+        <LocaleProvider locale={antdLocales[lang]}>{children}</LocaleProvider>
       </IntlProvider>
     );
   }
 }
 
-export default Layout;
+export default App;

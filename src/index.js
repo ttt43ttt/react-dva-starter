@@ -1,18 +1,25 @@
 import dva from 'dva';
-
-import 'antd/dist/antd.less';
-import './index.less';
+import createLoading from 'dva-loading';
+import createHistory from 'history/createBrowserHistory';
+import { message } from 'antd';
 
 import example from '@/models/example';
 import locale from '@/models/locale';
 
+import 'antd/dist/antd.less';
+import './index.less';
 import router from './router';
 
 // 1. Initialize
-const app = dva();
+const app = dva({
+  history: createHistory(),
+  onError(e) {
+    message.error(e.message, /* duration */ 3);
+  }
+});
 
 // 2. Plugins
-// app.use({});
+app.use(createLoading());
 
 // 3. Model
 app.model(example);

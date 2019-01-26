@@ -3,8 +3,10 @@ import dva from 'dva';
 import 'antd/dist/antd.less';
 import './index.less';
 
+import example from '@/models/example';
+import locale from '@/models/locale';
+
 import router from './router';
-import example from './models/example';
 
 // 1. Initialize
 const app = dva();
@@ -14,6 +16,7 @@ const app = dva();
 
 // 3. Model
 app.model(example);
+app.model(locale);
 
 // 4. Router
 app.router(router);

@@ -1,7 +1,14 @@
 import React from 'react';
+import { connect } from 'dva';
+
 import { addLocaleData, IntlProvider } from 'react-intl';
 import en from 'react-intl/locale-data/en';
 import zh from 'react-intl/locale-data/zh';
+
+import { LocaleProvider } from 'antd';
+import antdZh from 'antd/lib/locale-provider/zh_CN';
+import antdEn from 'antd/lib/locale-provider/en_US';
+
 import enMessages from '@/locales/en';
 import zhMessages from '@/locales/zh';
 import BaseLayout from './BaseLayout';
@@ -14,14 +21,23 @@ const messages = {
   zh: zhMessages
 };
 
-const locale = 'zh';
+const antdLocales = {
+  en: antdEn,
+  zh: antdZh
+};
 
+@connect(({ locale }) => ({ locale }))
 class Layout extends React.Component {
   render() {
-    const { children } = this.props;
+    const {
+      children,
+      locale: { lang }
+    } = this.props;
     return (
-      <IntlProvider locale={locale} messages={messages[locale]}>
-        <BaseLayout>{children}</BaseLayout>
+      <IntlProvider locale={lang} messages={messages[lang]}>
+        <LocaleProvider locale={antdLocales[lang]}>
+          <BaseLayout>{children}</BaseLayout>
+        </LocaleProvider>
       </IntlProvider>
     );
   }

@@ -48,6 +48,8 @@ const menu = [
   }
 ];
 
+const theme = 'light';
+
 class BasicLayout extends React.Component {
   render() {
     const { children, location } = this.props;
@@ -64,11 +66,12 @@ class BasicLayout extends React.Component {
           menuData={menu}
           location={location}
           onCollapse={() => {}}
+          theme={theme}
         />
         <Layout>
-          <Header />
-          <Layout.Content>{children}</Layout.Content>
-          <Footer />
+          <Header theme={theme} />
+          <Layout.Content theme={theme}>{children}</Layout.Content>
+          <Footer theme={theme} />
         </Layout>
       </Layout>
     );

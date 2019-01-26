@@ -1,7 +1,7 @@
 import dva from 'dva';
 
 import 'antd/dist/antd.less';
-import './index.css';
+import './index.less';
 
 import router from './router';
 import example from './models/example';

@@ -14,6 +14,40 @@ const definePluginVars = {
   'process.env.DEVELOPMENT': JSON.stringify(ifDevelopment(true, false))
 };
 
+const getLessLoaders = useModules => {
+  return [
+    {
+      loader: ifProduction(MiniCssExtractPlugin.loader, 'style-loader') // creates style nodes from JS strings
+    },
+    {
+      loader: 'css-loader', // translates CSS into CommonJS
+      options: useModules
+        ? {
+            modules: true,
+            localIdentName: '[name]__[local]--[hash:base64:5]'
+          }
+        : {}
+    },
+    {
+      loader: 'postcss-loader',
+      options: {
+        plugins: () => [autoprefixer]
+      }
+    },
+    {
+      loader: 'less-loader', // compiles Less to CSS
+      options: {
+        // modifyVars: {
+        //   'primary-color': '#1DA57A',
+        //   'link-color': '#1DA57A',
+        //   'border-radius-base': '2px'
+        // },
+        javascriptEnabled: true
+      }
+    }
+  ];
+};
+
 module.exports = {
   mode: NODE_ENV,
   entry: {
@@ -48,56 +82,17 @@ module.exports = {
           }
         }
       },
+
       // CSS
       {
         test: /\.css$/,
-        include: [path.resolve(__dirname, 'src')],
-        use: [
-          {
-            loader: ifProduction(MiniCssExtractPlugin.loader, 'style-loader')
-          },
-          {
-            loader: 'css-loader',
-            options: {
-              modules: true // use CSS modules only for files in src folder
-            }
-          }
-        ]
-      },
-      {
-        test: /\.css$/,
-        exclude: [path.resolve(__dirname, 'src')],
         use: [ifProduction(MiniCssExtractPlugin.loader, 'style-loader'), 'css-loader']
       },
+
       // LESS
-      {
-        test: /\.less$/,
-        use: [
-          {
-            loader: ifProduction(MiniCssExtractPlugin.loader, 'style-loader') // creates style nodes from JS strings
-          },
-          {
-            loader: 'css-loader' // translates CSS into CommonJS
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              plugins: () => [autoprefixer]
-            }
-          },
-          {
-            loader: 'less-loader', // compiles Less to CSS
-            options: {
-              // modifyVars: {
-              //   'primary-color': '#1DA57A',
-              //   'link-color': '#1DA57A',
-              //   'border-radius-base': '2px'
-              // },
-              javascriptEnabled: true
-            }
-          }
-        ]
-      },
+      { test: /\.less$/, include: [path.resolve(__dirname, 'src')], use: getLessLoaders(true) },
+      { test: /\.less$/, exclude: [path.resolve(__dirname, 'src')], use: getLessLoaders(false) },
+
       // images
       {
         test: /\.(png|jpg|gif)$/,

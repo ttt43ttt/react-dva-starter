@@ -2,8 +2,8 @@ import React from 'react';
 import { addLocaleData, IntlProvider } from 'react-intl';
 import en from 'react-intl/locale-data/en';
 import zh from 'react-intl/locale-data/zh';
-import enMessages from '../locales/en';
-import zhMessages from '../locales/zh';
+import enMessages from '@/locales/en';
+import zhMessages from '@/locales/zh';
 import BaseLayout from './BaseLayout';
 
 // register locale data

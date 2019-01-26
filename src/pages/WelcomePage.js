@@ -1,16 +1,20 @@
 import React from 'react';
-import { connect } from 'dva';
 import { DatePicker } from 'antd';
 import { FormattedMessage } from 'react-intl';
-import styles from './IndexPage.less';
+import DocumentTitle from 'react-document-title';
+import styles from './WelcomePage.less';
 
-function IndexPage() {
+const WelcomePage = () => {
   return (
     <div className={styles.normal}>
+      <DocumentTitle title="Welcome to dva" />
+
       <h1 className={styles.title}>Yay! Welcome to dva!</h1>
       <div className={styles.welcome} />
+
       <DatePicker />
       <FormattedMessage id="navBar.lang" />
+
       <ul className={styles.list}>
         <li>
           To get started, edit <code>src/index.js</code> and save to reload.
@@ -23,8 +27,6 @@ function IndexPage() {
       </ul>
     </div>
   );
-}
+};
 
-IndexPage.propTypes = {};
-
-export default connect()(IndexPage);
+export default WelcomePage;

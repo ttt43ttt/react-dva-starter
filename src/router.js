@@ -4,13 +4,16 @@ import { Router } from 'dva/router';
 import App from '@/App';
 import renderRoutes from '@/utils/renderRoutes';
 import BasicLayout from '@/layouts/BasicLayout';
-import IndexPage from '@/pages/IndexPage';
+import WelcomePage from '@/pages/WelcomePage';
 
 const routes = [
   {
     path: '/',
     component: BasicLayout,
-    routes: [{ path: '/', exact: true, redirect: '/home' }, { path: '/home', component: IndexPage }]
+    routes: [
+      { path: '/', exact: true, redirect: '/welcome' },
+      { path: '/welcome', component: WelcomePage }
+    ]
   }
 ];
 

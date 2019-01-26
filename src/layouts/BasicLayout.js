@@ -1,39 +1,22 @@
 import React from 'react';
-import { Icon } from 'antd';
-import { connect } from 'dva';
-import store from 'store';
-import SelectLang from '@/components/SelectLang';
+import { Layout } from 'antd';
 import Footer from './Footer';
+import Header from './Header';
 import styles from './BasicLayout.less';
 
-@connect(({ locale }) => ({ locale }))
 class BasicLayout extends React.Component {
   render() {
-    const {
-      children,
-      locale: { lang },
-      dispatch
-    } = this.props;
-
-    const setLocale = newLang => {
-      dispatch({
-        type: 'locale/setLocale',
-        payload: { lang: newLang }
-      });
-      store.set('lang', newLang);
-    };
+    const { children } = this.props;
 
     return (
-      <div>
-        <div>
-          header
-          <Icon type="user" />
-          <Icon type="setting" />
-          <SelectLang selectedLang={lang} setLocale={setLocale} />
-        </div>
-        {children}
-        <Footer />
-      </div>
+      <Layout className={styles.main}>
+        <Layout.Sider>Sider</Layout.Sider>
+        <Layout>
+          <Header />
+          <Layout.Content>{children}</Layout.Content>
+          <Footer />
+        </Layout>
+      </Layout>
     );
   }
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Layout } from 'antd';
+import { parse } from 'qs';
 import SiderMenu from '@/components/SiderMenu';
 import logo from '@/assets/logo.svg';
 import Footer from './Footer';
@@ -51,14 +52,17 @@ class BasicLayout extends React.Component {
   render() {
     const { children, location } = this.props;
 
+    const viewParams = parse(location.hash.substr(1));
+    const hideSiderMenu = viewParams.sider === 'no';
+
     return (
       <Layout className={styles.main}>
         <SiderMenu
           logo={logo}
-          isMobile={false}
+          isMobile={false || hideSiderMenu}
+          collapsed={false || hideSiderMenu}
           menuData={menu}
           location={location}
-          collapsed={false}
           onCollapse={() => {}}
         />
         <Layout>

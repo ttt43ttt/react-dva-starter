@@ -17,12 +17,10 @@ const WelcomePage = () => {
 
       <ul className={styles.list}>
         <li>
-          To get started, edit <code>src/index.js</code> and save to reload.
+          <a href="#sider=no">Hide sider menu</a>
         </li>
         <li>
-          <a href="https://github.com/dvajs/dva-docs/blob/master/v1/en-us/getting-started.md">
-            Getting Started
-          </a>
+          <a href="#">Show sider menu</a>
         </li>
       </ul>
     </div>

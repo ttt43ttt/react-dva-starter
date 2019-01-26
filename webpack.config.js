@@ -16,9 +16,15 @@ const definePluginVars = {
 
 const getLessLoaders = useModules => {
   return [
-    {
-      loader: ifProduction(MiniCssExtractPlugin.loader, 'style-loader') // creates style nodes from JS strings
-    },
+    ifProduction(
+      { loader: MiniCssExtractPlugin.loader },
+      {
+        loader: 'style-loader', // creates style nodes from JS strings
+        options: {
+          hmr: false
+        }
+      }
+    ),
     {
       loader: 'css-loader', // translates CSS into CommonJS
       options: useModules

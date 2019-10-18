@@ -1,37 +1,49 @@
 const path = require('path');
 const express = require('express');
+const proxy = require('http-proxy-middleware');
 const webpack = require('webpack');
 const signale = require('signale');
+const mockApiMiddleware = require('express-mock-api-middleware');
+const historyMiddleware = require('connect-history-api-fallback');
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
+
 const webpackConfig = require('./webpack.config');
+const proxyConfig = require('./server-proxy.config');
+
+// ============= ENVIRONMENT VARIABLES =============
+const port = process.env.PORT || 8000;
+const host = process.env.HOST || 'localhost';
+const apiTarget = process.env.API; // API=mock or http://localhost:8080
 
 const app = express();
 const compiler = webpack(webpackConfig);
 
-const port = process.env.PORT || 8000;
-const host = process.env.HOST || 'localhost';
+const historyMiddlewareHandler = historyMiddleware();
 
-const historyMiddleware = require('connect-history-api-fallback')();
-
-const webpackDevMiddleware = require('webpack-dev-middleware')(compiler, {
+const webpackDevMiddlewareHandler = webpackDevMiddleware(compiler, {
   reload: true,
-  noInfo: true,
-  publicPath: webpackConfig.output.publicPath
+  logLevel: 'warn',
+  publicPath: webpackConfig.output.publicPath,
 });
 
-const webpackHotMiddleware = require('webpack-hot-middleware')(compiler);
+const webpackHotMiddlewareHandler = webpackHotMiddleware(compiler);
 
-// mock api
-const mockJsMiddleware = require('./scripts/express-mockjs-middleware')(
-  path.resolve(__dirname, 'mock')
-);
+if (apiTarget === 'mock') {
+  // mock api
+  app.use(mockApiMiddleware(path.resolve(__dirname, 'mock')));
+} else {
+  const baseConfig = { changeOrigin: true, headers: { 'User-Agent': '' } };
 
-app.use(mockJsMiddleware);
-app.use(historyMiddleware);
-app.use(webpackDevMiddleware);
-app.use(webpackHotMiddleware);
+  proxyConfig.list.forEach(({ apiPath, config }) => {
+    app.use(proxy(apiPath, { ...baseConfig, ...config }));
+  });
+}
 
-// const staticAssets = express.static(path.join(__dirname, "assets"));
-// app.use("/", staticAssets);
+app.use(express.static(path.join(__dirname, 'assets')));
+app.use(historyMiddlewareHandler);
+app.use(webpackDevMiddlewareHandler);
+app.use(webpackHotMiddlewareHandler);
 
 app.listen(port, host, error => {
   if (error) {

@@ -1,19 +1,21 @@
 import dva from 'dva';
+import createLoading from 'dva-loading';
 
 import 'antd/dist/antd.less';
-import './index.css';
+import './index.less';
 
 import router from './router';
-import example from './models/example';
+import models from './models';
 
 // 1. Initialize
 const app = dva();
+window.g_app = app;
 
 // 2. Plugins
-// app.use({});
+app.use(createLoading());
 
 // 3. Model
-app.model(example);
+models.forEach(model => app.model(model));
 
 // 4. Router
 app.router(router);

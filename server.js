@@ -1,6 +1,6 @@
 const path = require('path');
 const express = require('express');
-const proxy = require('http-proxy-middleware');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 const webpack = require('webpack');
 const signale = require('signale');
 const mockApiMiddleware = require('express-mock-api-middleware');
@@ -12,7 +12,7 @@ const webpackConfig = require('./webpack.config');
 const proxyConfig = require('./server-proxy.config');
 
 // ============= ENVIRONMENT VARIABLES =============
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 8200;
 const host = process.env.HOST || 'localhost';
 const apiTarget = process.env.API; // API=mock or http://localhost:8080
 
@@ -22,8 +22,6 @@ const compiler = webpack(webpackConfig);
 const historyMiddlewareHandler = historyMiddleware();
 
 const webpackDevMiddlewareHandler = webpackDevMiddleware(compiler, {
-  reload: true,
-  logLevel: 'warn',
   publicPath: webpackConfig.output.publicPath,
 });
 
@@ -36,7 +34,7 @@ if (apiTarget === 'mock') {
   const baseConfig = { changeOrigin: true, headers: { 'User-Agent': '' } };
 
   proxyConfig.list.forEach(({ apiPath, config }) => {
-    app.use(proxy(apiPath, { ...baseConfig, ...config }));
+    app.use(createProxyMiddleware(apiPath, { ...baseConfig, ...config }));
   });
 }
 

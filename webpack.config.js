@@ -5,12 +5,11 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { getIfUtils, removeEmpty } = require('webpack-config-utils');
-const autoprefixer = require('autoprefixer');
 
 const APP_NAME = process.env.ENV_APP_NAME || 'app';
 console.log('webpack: APP_NAME is ' + APP_NAME);
 
-const PUBLIC_PATH = process.env.ENV_PUBLIC_PATH || `/`;
+const PUBLIC_PATH = process.env.ENV_PUBLIC_PATH || '';
 console.log('webpack: PUBLIC_PATH is ' + PUBLIC_PATH);
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
@@ -32,7 +31,7 @@ const getAppEntry = () => {
   };
 };
 
-const getLessLoaders = useModules => {
+const getLessLoaders = (useModules) => {
   return [
     ifProduction(
       { loader: MiniCssExtractPlugin.loader },
@@ -54,7 +53,9 @@ const getLessLoaders = useModules => {
     {
       loader: 'postcss-loader',
       options: {
-        plugins: () => [autoprefixer],
+        postcssOptions: {
+          plugins: ['postcss-preset-env'],
+        },
       },
     },
     {
@@ -65,7 +66,7 @@ const getLessLoaders = useModules => {
         //   'link-color': '#1DA57A',
         //   'border-radius-base': '2px'
         // },
-        javascriptEnabled: true,
+        lessOptions: { javascriptEnabled: true },
       },
     },
   ];
@@ -77,8 +78,8 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, `build/dist`),
     publicPath: PUBLIC_PATH,
-    filename: ifProduction('app-[hash].js', 'app.js'),
-    chunkFilename: ifProduction('[id].bundle-[chunkhash].js', '[id].bundle.js'),
+    filename: ifProduction('[name]-[contenthash].js', '[name].js'),
+    chunkFilename: ifProduction('[name]-[chunkhash].js', '[name].js'),
   },
 
   resolve: {
@@ -133,8 +134,8 @@ module.exports = {
     ifProduction(new CleanWebpackPlugin()),
     ifProduction(
       new MiniCssExtractPlugin({
-        filename: 'app-[hash].css',
-        chunkFilename: 'app.[id]-[hash].css',
+        filename: '[name]-[contenthash].css',
+        chunkFilename: '[name]-[chunkhash].css',
       })
     ),
     ifDevelopment(new webpack.HotModuleReplacementPlugin()),
@@ -146,13 +147,15 @@ module.exports = {
       hash: false,
     }),
     ifProduction(
-      new CopyWebpackPlugin([
-        {
-          context: 'assets',
-          from: { glob: '**/*' },
-          to: '.',
-        },
-      ])
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            context: 'assets',
+            from: '**/*',
+            to: '.',
+          },
+        ],
+      })
     ),
   ]),
 

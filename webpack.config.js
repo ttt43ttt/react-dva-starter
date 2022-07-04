@@ -5,6 +5,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { getIfUtils, removeEmpty } = require('webpack-config-utils');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 const APP_NAME = process.env.ENV_APP_NAME || 'app';
 console.log('webpack: APP_NAME is ' + APP_NAME);
@@ -139,6 +140,7 @@ module.exports = {
       })
     ),
     ifDevelopment(new webpack.HotModuleReplacementPlugin()),
+    ifDevelopment(new ReactRefreshWebpackPlugin()),
     new webpack.DefinePlugin(definePluginVars),
     new HtmlWebpackPlugin({
       template: './src/index.html',

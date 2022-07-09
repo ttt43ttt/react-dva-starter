@@ -1,0 +1,27 @@
+{
+  "assumptions": {
+    "setPublicClassFields": true
+  },
+  "presets": [
+    "@babel/preset-env",
+    "@babel/preset-react"
+  ],
+  "env": {
+    "development": {
+      "plugins": [
+        "react-refresh/babel"
+      ]
+    }
+  },
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "alias": {
+          "@": "./src"
+        }
+      }
+    ],
+    "@babel/plugin-transform-runtime"
+  ]
+}
